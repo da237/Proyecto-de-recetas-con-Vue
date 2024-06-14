@@ -1,11 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagina de recetas</title>
+    <script src="https://unpkg.com/vue@3"></script>
+  </head>
+  <body>
+    <div id="appReceta">
+      <h1>Mi libro de resetas</h1>
+      <div style="width: 50%; float: left">
+        <h3>Seleccione una receta</h3>
+        <p>
+          <input type="text" placeholder="Buscar..." 
+          v-model="search"/>
+        </p>
+        <ul>
+          <li v-for="n in lista_recetas_filtrada" :key="n.id">
+            <a href="#" @click="SeleccionarReceta( n )">{{ n.nombre }}</a>
+          </li>
+        </ul>
+        <button @click="show_add_receta =! show_add_receta">Agregar Nueva receta</button>
+
+        <div v-show="show_add_receta">
+          <p>
+            <input type="text" placeholder="Id..." 
+            v-model="new_receta.id"/>
+          </p>
+          <p>
+            <input type="text" placeholder="Nombre de la Receta" 
+            v-model="new_receta.nombre"/>
+          </p>
+          <p>
+            <textarea  cols="30"
+            rows="10"
+            v-model="new_receta.descripcion"></textarea>
+          </p>
+          <p>
+            <input type="text" placeholder="Chef de la Receta" 
+            v-model="new_receta.chef"/>
+          </p>
+          <p>
+            <input type="text" placeholder="Agregar ingredientes"
+            v-model="nuevo_ingrediente"
+            @keyup.enter="AgregarIngrediente"/>
+          </p>
+          <ul>
+            <li v-for="ingrediente in new_receta.ingredientes" 
+            :key="ingrediente.id">
+              {{ ingrediente.nombre }}
+            </li>
+          </ul>
+          <button @click="AgregarReceta()">Guardar</button>
+        </div>
+      </div>
+
+      <div v-if="receta_seleccionada"
+      style="width: 50%; float: right">
+        <h3>{{ receta_seleccionada.nombre }}</h3>
+        <h4>{{ receta_seleccionada.chef }}</h4>
+        <h4>Ingredientes:</h4>
+        <ul>
+            <li v-for="n in receta_seleccionada.ingredientes" :key="n">
+                {{ n.nombre }}
+            </li>
+        </ul>
+        <p style="background: cadetblue;">
+            {{ receta_seleccionada.descripcion }}
+        </p>
+    </div>
+    </div>
+
+    <script src="vue.global.js"></script>
+    <script src="recetas.js"></script>
+  </body>
 </html>

@@ -135,7 +135,7 @@ createApp({
         ingredientes: [],
       },
       nuevo_ingrediente: "",
-      receta_seleccionada:null,
+      receta_seleccionada: null,
     };
   },
   computed: {
@@ -154,7 +154,7 @@ createApp({
     },
   },
   methods: {
-    AgregarIngrediente () {
+    AgregarIngrediente() {
       var new_date = new Date();
       let ingrediente = {
         id: "i1000" + new_date.getTime(),
@@ -163,12 +163,30 @@ createApp({
       this.new_receta.ingredientes.push(ingrediente);
       // this.new_receta.ingredientes.push('nuevo_ingrediente')
       // console.log(this.nuevo_ingrediente)
+      this.nuevo_ingrediente = ''
     },
-    AgregarReceta (){
-      return this.lista_recetas.push(this.new_receta)
+    AgregarReceta() {
+      this.lista_recetas.push({ ...this.new_receta });
+      alert("Receta guardada");
+      this.new_receta = {
+        id: "",
+        nombre: "",
+        descripcion: "",
+        chef: "",
+        ingredientes: [],
+      };
+      this.show_add_receta = false;
     },
-    SeleccionarReceta ( receta ){
+    SeleccionarReceta(receta) {
       return this.receta_seleccionada = receta
-    }
+    },
+    EliminarReceta() {
+      if (this.receta_seleccionada) {
+        this.lista_recetas = this.lista_recetas.filter(
+          receta => receta.id !== this.receta_seleccionada.id
+        );
+        this.receta_seleccionada = null;
+      }
+    },
   },
 }).mount("#appReceta");
